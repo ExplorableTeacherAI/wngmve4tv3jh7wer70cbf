@@ -128,6 +128,56 @@ export const variableDefinitions: Record<string, VariableDefinition> = {
         color: '#62D0AD',
         bgColor: 'rgba(98, 208, 173, 0.2)',
     },
+    // ─────────────────────────────────────────
+    // Section: Size and Order
+    // ─────────────────────────────────────────
+    orderPairShape: {
+        defaultValue: 'two square matrices',
+        type: 'select',
+        label: 'Shape of the pair',
+        description: 'Which pair of matrices is on the bench',
+        options: ['two square matrices', 'a wide and a tall matrix', 'a mismatched pair'],
+        color: '#AC8BF9',
+        bgColor: 'rgba(172, 139, 249, 0.15)',
+    },
+    orderMatrixA: {
+        defaultValue: [1, 2, 3, 4],
+        type: 'array',
+        label: 'Matrix A entries',
+        description: 'Entries of the first matrix, read left to right, row by row',
+    },
+    orderMatrixB: {
+        defaultValue: [2, 0, 1, 5],
+        type: 'array',
+        label: 'Matrix B entries',
+        description: 'Entries of the second matrix, read left to right, row by row',
+    },
+    orderHighlight: {
+        defaultValue: '',
+        type: 'linkedHighlight',
+        label: 'Product highlight',
+        description: 'Highlights the A times B answer or the B times A answer',
+        color: '#62D0AD',
+        bgColor: 'rgba(98, 208, 173, 0.2)',
+    },
+    answerOrderSize: {
+        defaultValue: '',
+        type: 'text',
+        label: 'Answer size',
+        description: 'Student answer for the size of a 3 by 4 times 4 by 2 product',
+        placeholder: '??? by ???',
+        correctAnswer: ['3 by 2', '3x2', '3 x 2', '3×2', '3 × 2', '3 2', '3,2', '3, 2'],
+        color: '#8E90F5',
+    },
+    answerOrderSwap: {
+        defaultValue: '',
+        type: 'text',
+        label: 'Swapped top-left entry',
+        description: 'Student answer for the top-left entry of B times A',
+        placeholder: '???',
+        correctAnswer: '1',
+        color: '#8E90F5',
+    },
     answerRowColumnEntry: {
         defaultValue: '',
         type: 'text',
