@@ -11,6 +11,7 @@ import { matricesRowMeetsColumnBlocks } from "./sections/matricesRowMeetsColumn"
 import { matricesSizeAndOrderBlocks } from "./sections/matricesSizeAndOrder";
 import { matricesDeterminantBlocks } from "./sections/matricesDeterminant";
 import { matricesInverseBlocks } from "./sections/matricesInverse";
+import { matricesPracticeBlocks } from "./sections/matricesPractice";
 import { matricesConclusionBlocks } from "./sections/matricesConclusion";
 
 export const blocks: ReactElement[] = [
@@ -19,5 +20,6 @@ export const blocks: ReactElement[] = [
     ...matricesSizeAndOrderBlocks,
     ...matricesDeterminantBlocks,
     ...matricesInverseBlocks,
+    ...matricesPracticeBlocks,
     ...matricesConclusionBlocks,
 ];
