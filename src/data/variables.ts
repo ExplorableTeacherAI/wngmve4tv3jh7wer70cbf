@@ -81,6 +81,73 @@ export interface VariableDefinition {
  *    { defaultValue: { x: 5, y: 10 }, type: 'object', schema: '{ x: number, y: number }' }
  */
 export const variableDefinitions: Record<string, VariableDefinition> = {
+    // ─────────────────────────────────────────
+    // Section: One Row Meets One Column
+    // ─────────────────────────────────────────
+    rowColumnSelectedRow: {
+        defaultValue: 0,
+        type: 'number',
+        label: 'Selected answer row',
+        description: 'Which row of the answer grid the student is building (0 or 1)',
+        min: 0,
+        max: 1,
+        step: 1,
+        color: '#62D0AD',
+    },
+    rowColumnSelectedColumn: {
+        defaultValue: 0,
+        type: 'number',
+        label: 'Selected answer column',
+        description: 'Which column of the answer grid the student is building (0 or 1)',
+        min: 0,
+        max: 1,
+        step: 1,
+        color: '#8E90F5',
+    },
+    rowColumnPairsMade: {
+        defaultValue: 0,
+        type: 'number',
+        label: 'Pairs made',
+        description: 'How many row-column number pairs the student has joined for the current entry',
+        min: 0,
+        max: 3,
+        step: 1,
+        color: '#62D0AD',
+    },
+    rowColumnFilledCells: {
+        defaultValue: [0, 0, 0, 0],
+        type: 'array',
+        label: 'Filled answer cells',
+        description: 'Which of the four answer entries the student has completed',
+    },
+    rowColumnHighlight: {
+        defaultValue: '',
+        type: 'linkedHighlight',
+        label: 'Row / column highlight',
+        description: 'Highlights the selected row of the recipe matrix or column of the price matrix',
+        color: '#62D0AD',
+        bgColor: 'rgba(98, 208, 173, 0.2)',
+    },
+    answerRowColumnEntry: {
+        defaultValue: '',
+        type: 'text',
+        label: 'Top-left entry answer',
+        description: 'Student answer for the top-left entry of a fresh matrix product',
+        placeholder: '???',
+        correctAnswer: '4',
+        color: '#8E90F5',
+    },
+    answerRowColumnAddress: {
+        defaultValue: '',
+        type: 'select',
+        label: 'Entry address answer',
+        description: 'Student answer for which column builds the row 2, column 1 entry',
+        placeholder: '???',
+        correctAnswer: 'column 1',
+        options: ['column 1', 'column 2', 'row 1', 'row 2'],
+        color: '#8E90F5',
+    },
+
     // ========================================
     // ADD YOUR VARIABLES HERE
     // ========================================
