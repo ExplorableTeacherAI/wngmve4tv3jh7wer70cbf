@@ -4,14 +4,98 @@ import { StackLayout } from "@/components/layouts";
 import {
     EditableH2,
     EditableParagraph,
+    InlineClozeChoice,
     InlineClozeInput,
     InlineFeedback,
     InlineFormula,
+    InlineToggle,
 } from "@/components/atoms";
-import { getVariableInfo, clozePropsFromDefinition } from "../variables";
+import { useVar } from "@/stores";
+import {
+    getVariableInfo,
+    clozePropsFromDefinition,
+    choicePropsFromDefinition,
+    togglePropsFromDefinition,
+} from "../variables";
 
 const MATRIX_A = "A = \\begin{bmatrix} 2 & 3 \\\\ 1 & 4 \\end{bmatrix}";
 const MATRIX_B = "B = \\begin{bmatrix} 1 & 5 \\\\ 2 & 0 \\end{bmatrix}";
+
+/**
+ * The four squares of C times D. Switching the toggle swaps in the question for
+ * that square, each with its own answer and its own explanation.
+ */
+const GRID_ENTRIES: Record<string, { varName: string; answer: string; pairing: string; success: string }> = {
+    "row 1, column 1": {
+        varName: "answerPracticeGridTopLeft",
+        answer: "8",
+        pairing: "row 1 of C is 1 and 2; column 1 of D is 4 and 2, read downwards",
+        success: "— exactly, 1 × 4 plus 2 × 2 gives 8",
+    },
+    "row 1, column 2": {
+        varName: "answerPracticeGridTopRight",
+        answer: "11",
+        pairing: "row 1 of C is 1 and 2; column 2 of D is 1 and 5, read downwards",
+        success: "— right, 1 × 1 plus 2 × 5 gives 11",
+    },
+    "row 2, column 1": {
+        varName: "answerPracticeGridBottomLeft",
+        answer: "12",
+        pairing: "row 2 of C is 3 and 0, so the second pair contributes nothing",
+        success: "— exactly, 3 × 4 plus 0 × 2 gives 12",
+    },
+    "row 2, column 2": {
+        varName: "answerPracticeGridBottomRight",
+        answer: "3",
+        pairing: "row 2 of C is 3 and 0, so only the first pair counts",
+        success: "— right, 3 × 1 plus 0 × 5 gives 3",
+    },
+};
+
+/** Shows the question belonging to whichever square the toggle is pointing at. */
+function GridEntryQuestion() {
+    const position = useVar<string>("practiceEntryPosition", "row 1, column 1");
+    const entry = GRID_ENTRIES[position] ?? GRID_ENTRIES["row 1, column 1"];
+    return (
+        <InlineFeedback
+            key={entry.varName}
+            varName={entry.varName}
+            correctValue={entry.answer}
+            position="terminal"
+            successMessage={entry.success}
+            failureMessage="— not that one."
+            hint={entry.pairing}
+            visualizationHint={{
+                blockId: "row-column-visual",
+                hintKey: "practice-grid-entry-hint",
+                steps: [
+                    {
+                        gesture: "click",
+                        label: "Choose a square of the answer grid",
+                        position: { x: "68%", y: "21%" },
+                    },
+                    {
+                        gesture: "drag-horizontal",
+                        label: "Join every pair and watch the products add up",
+                        position: { x: "16%", y: "57%" },
+                        completionVar: "rowColumnPairsMade",
+                        completionValue: 3,
+                        completionTolerance: 0.4,
+                    },
+                ],
+                label: "Build one on the grid",
+                resetVars: { rowColumnSelectedRow: 0, rowColumnSelectedColumn: 0, rowColumnPairsMade: 0 },
+            }}
+        >
+            <InlineClozeChoice
+                varName={entry.varName}
+                correctAnswer={entry.answer}
+                options={["3", "8", "11", "12"]}
+                {...choicePropsFromDefinition(getVariableInfo(entry.varName))}
+            />
+        </InlineFeedback>
+    );
+}
 
 export const matricesPracticeBlocks: ReactElement[] = [
     <StackLayout key="layout-practice-heading" maxWidth="xl">
@@ -218,6 +302,25 @@ export const matricesPracticeBlocks: ReactElement[] = [
                         {...clozePropsFromDefinition(getVariableInfo('answerPracticeArea'))}
                     />
                 </InlineFeedback>.
+            </EditableParagraph>
+        </Block>
+    </StackLayout>,
+
+    <StackLayout key="layout-practice-question-grid" maxWidth="xl">
+        <Block id="practice-question-grid" padding="md">
+            <EditableParagraph id="para-practice-question-grid" blockId="practice-question-grid">
+                6. One last product, built a square at a time. With{" "}
+                <InlineFormula latex="C = \begin{bmatrix} 1 & 2 \\ 3 & 0 \end{bmatrix}" colorMap={{}} />
+                {" "}and{" "}
+                <InlineFormula latex="D = \begin{bmatrix} 4 & 1 \\ 2 & 5 \end{bmatrix}" colorMap={{}} />
+                , the entry in{" "}
+                <InlineToggle
+                    id="toggle-practice-entry-position"
+                    varName="practiceEntryPosition"
+                    options={["row 1, column 1", "row 1, column 2", "row 2, column 1", "row 2, column 2"]}
+                    {...togglePropsFromDefinition(getVariableInfo('practiceEntryPosition'))}
+                />
+                {" "}of C times D is <GridEntryQuestion />, and each of the four squares has its own answer waiting.
             </EditableParagraph>
         </Block>
     </StackLayout>,
