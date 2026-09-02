@@ -8,16 +8,20 @@ import {
     InlineFeedback,
     InlineFormula,
     InlineLinkedHighlight,
+    InlineSpotColor,
     InlineToggle,
+    InlineTooltip,
+    InlineTrigger,
     InteractionHintSequence,
 } from "@/components/atoms";
-import { Figure } from "@/components/molecules";
+import { Figure, FormulaBlock } from "@/components/molecules";
 import { useVar, useSetVar } from "@/stores";
 import {
     getVariableInfo,
     clozePropsFromDefinition,
     togglePropsFromDefinition,
     linkedHighlightPropsFromDefinition,
+    spotColorPropsFromDefinition,
 } from "../variables";
 import { clamp } from "@/lib/motion";
 
@@ -299,8 +303,28 @@ export const matricesSizeAndOrderBlocks: ReactElement[] = [
     <StackLayout key="layout-size-order-setup" maxWidth="xl">
         <Block id="size-order-setup" padding="sm">
             <EditableParagraph id="para-size-order-setup" blockId="size-order-setup">
-                Not every pair of matrices can be multiplied at all, because the row you take and the
-                column it meets must hold the same number of entries. On the bench sit{" "}
+                Not every pair of matrices can be multiplied at all, because{" "}
+                <InlineSpotColor
+                    varName="rowAccent"
+                    {...spotColorPropsFromDefinition(getVariableInfo('rowAccent'))}
+                >
+                    the row you take
+                </InlineSpotColor>
+                {" "}and{" "}
+                <InlineSpotColor
+                    varName="columnAccent"
+                    {...spotColorPropsFromDefinition(getVariableInfo('columnAccent'))}
+                >
+                    the column it meets
+                </InlineSpotColor>
+                {" "}must hold{" "}
+                <InlineSpotColor
+                    varName="innerAccent"
+                    {...spotColorPropsFromDefinition(getVariableInfo('innerAccent'))}
+                >
+                    the same number of entries
+                </InlineSpotColor>
+                . On the bench sit{" "}
                 <InlineToggle
                     id="toggle-order-pair-shape"
                     varName="orderPairShape"
@@ -339,17 +363,45 @@ export const matricesSizeAndOrderBlocks: ReactElement[] = [
                 >
                     B times A
                 </InlineLinkedHighlight>
-                {" "}disagree in almost every square. Swap to the other pairs and it gets stranger: the
-                two answers can come out different sizes, and sometimes only one order exists at all.
+                {" "}disagree in almost every square. Swap to{" "}
+                <InlineTrigger id="trigger-order-mismatched-pair" varName="orderPairShape" value="a mismatched pair">
+                    a mismatched pair
+                </InlineTrigger>
+                {" "}and it gets stranger still: the two answers can come out different sizes, and
+                sometimes only one order exists at all.
             </EditableParagraph>
+        </Block>
+    </StackLayout>,
+
+    <StackLayout key="layout-size-order-rule" maxWidth="xl">
+        <Block id="size-order-rule" padding="lg">
+            <FormulaBlock
+                latex="(\clr{first}{m} \times \clr{inner}{n}) \; (\clr{inner}{n} \times \clr{second}{p}) \;\Rightarrow\; \choice{answerSizeRuleShape}"
+                colorMap={{ first: '#62D0AD', inner: '#F7B23B', second: '#8E90F5' }}
+                clozeChoices={{
+                    answerSizeRuleShape: {
+                        correctAnswer: 'm × p',
+                        options: ['m × n', 'n × p', 'm × p', 'n × n'],
+                        placeholder: '???',
+                        color: '#F7B23B',
+                        bgColor: 'rgba(247, 178, 59, 0.18)',
+                    },
+                }}
+            />
         </Block>
     </StackLayout>,
 
     <StackLayout key="layout-size-order-question-size" maxWidth="xl">
         <Block id="size-order-question-size" padding="md">
             <EditableParagraph id="para-size-order-question-size" blockId="size-order-question-size">
-                A 3 by 4 matrix is multiplied by a 4 by 2 matrix. The inner numbers meet, so the product
-                exists, and its size is{" "}
+                A 3 by 4 matrix is multiplied by a 4 by 2 matrix. The{" "}
+                <InlineTooltip
+                    id="tooltip-order-inner-numbers"
+                    tooltip="The inner numbers are the columns of the first matrix and the rows of the second. They must be equal for a product to exist."
+                >
+                    inner numbers
+                </InlineTooltip>
+                {" "}meet, so the product exists, and its size is{" "}
                 <InlineFeedback
                     varName="answerOrderSize"
                     correctValue={["3 by 2", "3x2", "3 x 2", "3×2", "3 × 2", "3 2", "3,2", "3, 2"]}
@@ -385,9 +437,15 @@ export const matricesSizeAndOrderBlocks: ReactElement[] = [
         <Block id="size-order-question-swap" padding="md">
             <EditableParagraph id="para-size-order-question-swap" blockId="size-order-question-swap">
                 Take{" "}
-                <InlineFormula latex="A = \begin{bmatrix} 1 & 2 \\ 0 & 1 \end{bmatrix}" colorMap={{}} />
+                <InlineFormula
+                    latex="\clr{matrixA}{A} = \begin{bmatrix} 1 & 2 \\ 0 & 1 \end{bmatrix}"
+                    colorMap={{ matrixA: '#62D0AD' }}
+                />
                 {" "}and{" "}
-                <InlineFormula latex="B = \begin{bmatrix} 1 & 0 \\ 3 & 1 \end{bmatrix}" colorMap={{}} />
+                <InlineFormula
+                    latex="\clr{matrixB}{B} = \begin{bmatrix} 1 & 0 \\ 3 & 1 \end{bmatrix}"
+                    colorMap={{ matrixB: '#8E90F5' }}
+                />
                 . The top-left entry of A times B is 7, so the top-left entry of B times A is{" "}
                 <InlineFeedback
                     varName="answerOrderSwap"

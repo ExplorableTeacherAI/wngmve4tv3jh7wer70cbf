@@ -9,6 +9,9 @@ import {
     InlineFeedback,
     InlineFormula,
     InlineLinkedHighlight,
+    InlineScrubbleNumber,
+    InlineSpotColor,
+    InlineTooltip,
     InteractionHintSequence,
 } from "@/components/atoms";
 import { Figure, FormulaBlock } from "@/components/molecules";
@@ -18,6 +21,8 @@ import {
     clozePropsFromDefinition,
     choicePropsFromDefinition,
     linkedHighlightPropsFromDefinition,
+    numberPropsFromDefinition,
+    spotColorPropsFromDefinition,
     scrubVarsFromDefinitions,
 } from "../variables";
 import { clamp } from "@/lib/motion";
@@ -271,9 +276,32 @@ export const matricesDeterminantBlocks: ReactElement[] = [
                 >
                     a leaning parallelogram
                 </InlineLinkedHighlight>
-                {" "}behind. Drag either coloured corner and the shape follows, while the number inside it
-                counts the area now covered. Then pull both corners onto the same line and watch that area
-                disappear.
+                {" "}behind. The{" "}
+                <InlineSpotColor
+                    varName="detEntryA"
+                    {...spotColorPropsFromDefinition(getVariableInfo('detEntryA'))}
+                >
+                    teal corner
+                </InlineSpotColor>
+                {" "}reaches{" "}
+                <InlineScrubbleNumber
+                    varName="detEntryA"
+                    {...numberPropsFromDefinition(getVariableInfo('detEntryA'))}
+                />
+                {" "}across, the{" "}
+                <InlineSpotColor
+                    varName="detEntryD"
+                    {...spotColorPropsFromDefinition(getVariableInfo('detEntryD'))}
+                >
+                    indigo corner
+                </InlineSpotColor>
+                {" "}climbs{" "}
+                <InlineScrubbleNumber
+                    varName="detEntryD"
+                    {...numberPropsFromDefinition(getVariableInfo('detEntryD'))}
+                />
+                {" "}up, and the number inside the shape counts the area covered. Pull both corners onto
+                one line and that area vanishes.
             </EditableParagraph>
         </Block>
     </StackLayout>,
@@ -287,7 +315,15 @@ export const matricesDeterminantBlocks: ReactElement[] = [
     <StackLayout key="layout-determinant-formula" maxWidth="xl">
         <Block id="determinant-formula" padding="lg">
             <FormulaBlock
-                latex="\det \begin{bmatrix} \scrub{detEntryA} & \scrub{detEntryB} \\ \scrub{detEntryC} & \scrub{detEntryD} \end{bmatrix} = ad - bc = \val{determinantValue}"
+                latex="\highlight{shape}{\det} \begin{bmatrix} \scrub{detEntryA} & \scrub{detEntryB} \\ \scrub{detEntryC} & \scrub{detEntryD} \end{bmatrix} = \clr{firstColumn}{a}\clr{secondColumn}{d} - \clr{secondColumn}{b}\clr{firstColumn}{c} = \val{determinantValue}"
+                colorMap={{ firstColumn: '#62D0AD', secondColumn: '#8E90F5' }}
+                linkedHighlights={{
+                    shape: {
+                        varName: 'determinantHighlight',
+                        color: '#AC8BF9',
+                        bgColor: 'rgba(172, 139, 249, 0.2)',
+                    },
+                }}
                 variables={{
                     ...scrubVarsFromDefinitions(['detEntryA', 'detEntryB', 'detEntryC', 'detEntryD']),
                     determinantValue: { color: '#AC8BF9', formatValue: (value: number) => value.toFixed(2) },
@@ -299,9 +335,25 @@ export const matricesDeterminantBlocks: ReactElement[] = [
     <StackLayout key="layout-determinant-reflect" maxWidth="xl">
         <Block id="determinant-reflect" padding="sm">
             <EditableParagraph id="para-determinant-reflect" blockId="determinant-reflect">
-                A determinant of 2 means areas double, and a negative one means the shape was flipped over
-                as well as stretched. When it reaches 0 the parallelogram has flattened into a line and
-                every scrap of area is gone, which turns out to matter enormously for what comes next.
+                A{" "}
+                <InlineTooltip
+                    id="tooltip-determinant-definition"
+                    tooltip="The determinant of a two by two matrix is the number of times it multiplies area, negative when it also flips the shape over."
+                    color="#AC8BF9"
+                    bgColor="rgba(172, 139, 249, 0.15)"
+                >
+                    determinant
+                </InlineTooltip>
+                {" "}of 2 means areas double, and a negative one means the shape was flipped over as well
+                as stretched. When it reaches{" "}
+                <InlineSpotColor
+                    varName="areaAccent"
+                    {...spotColorPropsFromDefinition(getVariableInfo('areaAccent'))}
+                >
+                    0
+                </InlineSpotColor>
+                {" "}the parallelogram has flattened into a line and every scrap of area is gone, which
+                matters enormously for what comes next.
             </EditableParagraph>
         </Block>
     </StackLayout>,
@@ -310,7 +362,10 @@ export const matricesDeterminantBlocks: ReactElement[] = [
         <Block id="determinant-question-value" padding="md">
             <EditableParagraph id="para-determinant-question-value" blockId="determinant-question-value">
                 Try one on paper. For{" "}
-                <InlineFormula latex="\begin{bmatrix} 3 & 1 \\ 2 & 3 \end{bmatrix}" colorMap={{}} />
+                <InlineFormula
+                    latex="\begin{bmatrix} \clr{firstColumn}{3} & \clr{secondColumn}{1} \\ \clr{firstColumn}{2} & \clr{secondColumn}{3} \end{bmatrix}"
+                    colorMap={{ firstColumn: '#62D0AD', secondColumn: '#8E90F5' }}
+                />
                 {" "}the determinant is{" "}
                 <InlineFeedback
                     varName="answerDeterminantValue"

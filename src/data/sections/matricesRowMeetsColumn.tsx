@@ -7,7 +7,11 @@ import {
     InlineClozeChoice,
     InlineClozeInput,
     InlineFeedback,
+    InlineFormula,
     InlineLinkedHighlight,
+    InlineSpotColor,
+    InlineTooltip,
+    InlineTrigger,
     InteractionHintSequence,
 } from "@/components/atoms";
 import { FormulaBlock, Figure } from "@/components/molecules";
@@ -17,6 +21,7 @@ import {
     clozePropsFromDefinition,
     choicePropsFromDefinition,
     linkedHighlightPropsFromDefinition,
+    spotColorPropsFromDefinition,
 } from "../variables";
 import { clamp } from "@/lib/motion";
 
@@ -386,20 +391,47 @@ export const matricesRowMeetsColumnBlocks: ReactElement[] = [
                     id="highlight-row-column-column"
                     varName="rowColumnHighlight"
                     highlightId="column"
-                    color="#8E90F5"
-                    bgColor="rgba(142, 144, 245, 0.2)"
+                    {...linkedHighlightPropsFromDefinition(getVariableInfo('columnAccent'))}
                 >
                     one whole column
                 </InlineLinkedHighlight>
-                : drag each teal number onto its indigo partner and watch the three products add into a
-                single square. So a row and a column together produce just one entry of the answer.
+: drag each{" "}
+                <InlineSpotColor
+                    varName="rowAccent"
+                    {...spotColorPropsFromDefinition(getVariableInfo('rowAccent'))}
+                >
+                    teal number
+                </InlineSpotColor>
+                {" "}onto its{" "}
+                <InlineSpotColor
+                    varName="columnAccent"
+                    {...spotColorPropsFromDefinition(getVariableInfo('columnAccent'))}
+                >
+                    indigo partner
+                </InlineSpotColor>
+                {" "}and watch the three products add into a single square. So a row and a column
+                together produce just one entry of the answer.
             </EditableParagraph>
         </Block>
     </StackLayout>,
 
     <StackLayout key="layout-row-column-rule" maxWidth="xl">
         <Block id="row-column-rule" padding="lg">
-            <FormulaBlock latex="\begin{bmatrix} a & b \end{bmatrix} \begin{bmatrix} p \\ q \end{bmatrix} = a p + b q" />
+            <FormulaBlock
+                latex="\begin{bmatrix} \highlight{row}{a} & \highlight{row}{b} \end{bmatrix} \begin{bmatrix} \highlight{column}{p} \\ \highlight{column}{q} \end{bmatrix} = \highlight{row}{a}\highlight{column}{p} + \highlight{row}{b}\highlight{column}{q}"
+                linkedHighlights={{
+                    row: {
+                        varName: 'rowColumnHighlight',
+                        color: '#62D0AD',
+                        bgColor: 'rgba(98, 208, 173, 0.2)',
+                    },
+                    column: {
+                        varName: 'rowColumnHighlight',
+                        color: '#8E90F5',
+                        bgColor: 'rgba(142, 144, 245, 0.2)',
+                    },
+                }}
+            />
         </Block>
     </StackLayout>,
 
@@ -412,9 +444,32 @@ export const matricesRowMeetsColumnBlocks: ReactElement[] = [
     <StackLayout key="layout-row-column-reflect" maxWidth="xl">
         <Block id="row-column-reflect" padding="sm">
             <EditableParagraph id="para-row-column-reflect" blockId="row-column-reflect">
-                Fill a second square and the pattern gives itself away. Each entry carries its own
-                address, the row it came from and the column it came from, and that address is also what
-                decides how big the answer is.
+                Fill{" "}
+                <InlineTrigger id="trigger-row-column-next-square" varName="rowColumnSelectedColumn" value={1}>
+                    the square next door
+                </InlineTrigger>
+                {" "}and the pattern gives itself away. Each{" "}
+                <InlineTooltip
+                    id="tooltip-row-column-entry"
+                    tooltip="An entry is one single number inside a matrix, named by the row and the column it sits in."
+                >
+                    entry
+                </InlineTooltip>
+                {" "}carries its own address, the{" "}
+                <InlineSpotColor
+                    varName="rowAccent"
+                    {...spotColorPropsFromDefinition(getVariableInfo('rowAccent'))}
+                >
+                    row
+                </InlineSpotColor>
+                {" "}it came from and the{" "}
+                <InlineSpotColor
+                    varName="columnAccent"
+                    {...spotColorPropsFromDefinition(getVariableInfo('columnAccent'))}
+                >
+                    column
+                </InlineSpotColor>
+                {" "}it came from, and that address decides how big the answer is.
             </EditableParagraph>
         </Block>
     </StackLayout>,
@@ -422,9 +477,17 @@ export const matricesRowMeetsColumnBlocks: ReactElement[] = [
     <StackLayout key="layout-row-column-question-entry" maxWidth="xl">
         <Block id="row-column-question-entry" padding="md">
             <EditableParagraph id="para-row-column-question-entry" blockId="row-column-question-entry">
-                Here is a fresh pair, away from the smoothie bar. The top row of the first matrix is 1 and
-                2, and the first column of the second matrix is 2 and 1, so the top-left entry of their
-                product is{" "}
+                Here is a fresh pair, away from the smoothie bar. Pair the top row of{" "}
+                <InlineFormula
+                    latex="\begin{bmatrix} \clr{row}{1} & \clr{row}{2} \\ 0 & 3 \end{bmatrix}"
+                    colorMap={{ row: '#62D0AD' }}
+                />
+                {" "}with the first column of{" "}
+                <InlineFormula
+                    latex="\begin{bmatrix} \clr{column}{2} & 1 \\ \clr{column}{1} & 4 \end{bmatrix}"
+                    colorMap={{ column: '#8E90F5' }}
+                />
+                {" "}and the top-left entry of their product is{" "}
                 <InlineFeedback
                     varName="answerRowColumnEntry"
                     correctValue="4"
@@ -470,8 +533,21 @@ export const matricesRowMeetsColumnBlocks: ReactElement[] = [
     <StackLayout key="layout-row-column-question-address" maxWidth="xl">
         <Block id="row-column-question-address" padding="md">
             <EditableParagraph id="para-row-column-question-address" blockId="row-column-question-address">
-                In any product, the entry sitting in row 2, column 1 is built from row 2 of the first
-                matrix together with{" "}
+                In any product, the entry sitting in{" "}
+                <InlineSpotColor
+                    varName="rowAccent"
+                    {...spotColorPropsFromDefinition(getVariableInfo('rowAccent'))}
+                >
+                    row 2
+                </InlineSpotColor>
+                ,{" "}
+                <InlineSpotColor
+                    varName="columnAccent"
+                    {...spotColorPropsFromDefinition(getVariableInfo('columnAccent'))}
+                >
+                    column 1
+                </InlineSpotColor>
+                {" "}is built from row 2 of the first matrix together with{" "}
                 <InlineFeedback
                     varName="answerRowColumnAddress"
                     correctValue="column 1"

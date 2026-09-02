@@ -9,7 +9,10 @@ import {
     InlineFeedback,
     InlineFormula,
     InlineLinkedHighlight,
+    InlineSpotColor,
     InlineToggle,
+    InlineTooltip,
+    InlineTrigger,
     InteractionHintSequence,
 } from "@/components/atoms";
 import { Figure, FormulaBlock } from "@/components/molecules";
@@ -20,6 +23,7 @@ import {
     choicePropsFromDefinition,
     togglePropsFromDefinition,
     linkedHighlightPropsFromDefinition,
+    spotColorPropsFromDefinition,
 } from "../variables";
 import { clamp } from "@/lib/motion";
 
@@ -340,7 +344,16 @@ export const matricesInverseBlocks: ReactElement[] = [
                 >
                     the product on the right
                 </InlineLinkedHighlight>
-                {" "}creeping towards the identity. The bench starts with{" "}
+                {" "}creeping towards the{" "}
+                <InlineTooltip
+                    id="tooltip-inverse-identity"
+                    tooltip="The identity matrix has 1s down the leading diagonal and 0s elsewhere. It leaves every point exactly where it was."
+                    color="#22c55e"
+                    bgColor="rgba(34, 197, 94, 0.15)"
+                >
+                    identity
+                </InlineTooltip>
+                . The bench starts with{" "}
                 <InlineToggle
                     id="toggle-inverse-matrix-choice"
                     varName="inverseMatrixChoice"
@@ -360,7 +373,19 @@ export const matricesInverseBlocks: ReactElement[] = [
 
     <StackLayout key="layout-inverse-formula" maxWidth="xl">
         <Block id="inverse-formula" padding="lg">
-            <FormulaBlock latex="\begin{bmatrix} a & b \\ c & d \end{bmatrix}^{-1} = \frac{1}{ad - bc} \begin{bmatrix} d & -b \\ -c & a \end{bmatrix}" />
+            <FormulaBlock
+                latex="\begin{bmatrix} \clr{firstColumn}{a} & \clr{secondColumn}{b} \\ \clr{firstColumn}{c} & \clr{secondColumn}{d} \end{bmatrix}^{-1} = \frac{1}{\clr{area}{ad - bc}} \begin{bmatrix} \clr{secondColumn}{d} & \choice{answerInverseSwapEntry} \\ \clr{firstColumn}{-c} & \clr{firstColumn}{a} \end{bmatrix}"
+                colorMap={{ firstColumn: '#62D0AD', secondColumn: '#8E90F5', area: '#AC8BF9' }}
+                clozeChoices={{
+                    answerInverseSwapEntry: {
+                        correctAnswer: '-b',
+                        options: ['b', '-b', 'd', '-d'],
+                        placeholder: '???',
+                        color: '#8E90F5',
+                        bgColor: 'rgba(142, 144, 245, 0.18)',
+                    },
+                }}
+            />
         </Block>
     </StackLayout>,
 
@@ -368,8 +393,19 @@ export const matricesInverseBlocks: ReactElement[] = [
         <Block id="inverse-reflect" padding="sm">
             <EditableParagraph id="para-inverse-reflect" blockId="inverse-reflect">
                 That is the whole definition, and the formula above simply builds the matrix that meets it.
-                Because the formula divides by the determinant, the flattening matrix is beyond rescue: no
-                four numbers you try will ever reach the identity, and the F never gets home.
+                Because the formula divides by the{" "}
+                <InlineSpotColor
+                    varName="areaAccent"
+                    {...spotColorPropsFromDefinition(getVariableInfo('areaAccent'))}
+                >
+                    determinant
+                </InlineSpotColor>
+                ,{" "}
+                <InlineTrigger id="trigger-inverse-flattening" varName="inverseMatrixChoice" value="a flattening matrix">
+                    a flattening matrix
+                </InlineTrigger>
+                {" "}is beyond rescue: no four numbers will ever reach the identity, and the F never gets
+                home.
             </EditableParagraph>
         </Block>
     </StackLayout>,
@@ -423,7 +459,10 @@ export const matricesInverseBlocks: ReactElement[] = [
         <Block id="inverse-question-entry" padding="md">
             <EditableParagraph id="para-inverse-question-entry" blockId="inverse-question-entry">
                 The matrix{" "}
-                <InlineFormula latex="\begin{bmatrix} 3 & 1 \\ 5 & 2 \end{bmatrix}" colorMap={{}} />
+                <InlineFormula
+                    latex="\begin{bmatrix} \clr{firstColumn}{3} & \clr{secondColumn}{1} \\ \clr{firstColumn}{5} & \clr{secondColumn}{2} \end{bmatrix}"
+                    colorMap={{ firstColumn: '#62D0AD', secondColumn: '#8E90F5' }}
+                />
                 {" "}has determinant 1, so nothing gets divided. Following the formula, the top-left entry
                 of its inverse is{" "}
                 <InlineFeedback

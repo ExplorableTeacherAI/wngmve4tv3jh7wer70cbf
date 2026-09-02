@@ -8,6 +8,7 @@ import {
     InlineClozeInput,
     InlineFeedback,
     InlineFormula,
+    InlineSpotColor,
     InlineToggle,
 } from "@/components/atoms";
 import { useVar } from "@/stores";
@@ -16,10 +17,15 @@ import {
     clozePropsFromDefinition,
     choicePropsFromDefinition,
     togglePropsFromDefinition,
+    spotColorPropsFromDefinition,
 } from "../variables";
 
-const MATRIX_A = "A = \\begin{bmatrix} 2 & 3 \\\\ 1 & 4 \\end{bmatrix}";
-const MATRIX_B = "B = \\begin{bmatrix} 1 & 5 \\\\ 2 & 0 \\end{bmatrix}";
+const MATRIX_A = "\\clr{matrixA}{A} = \\begin{bmatrix} 2 & 3 \\\\ 1 & 4 \\end{bmatrix}";
+const MATRIX_B = "\\clr{matrixB}{B} = \\begin{bmatrix} 1 & 5 \\\\ 2 & 0 \\end{bmatrix}";
+
+/** One colour language for the whole lesson: first matrix teal, second matrix indigo. */
+const FIRST_HUE = "#62D0AD";
+const SECOND_HUE = "#8E90F5";
 
 /**
  * The four squares of C times D. Switching the toggle swaps in the question for
@@ -109,8 +115,21 @@ export const matricesPracticeBlocks: ReactElement[] = [
     <StackLayout key="layout-practice-intro" maxWidth="xl">
         <Block id="practice-intro" padding="sm">
             <EditableParagraph id="para-practice-intro" blockId="practice-intro">
-                Five questions, one for each idea you have built. Nothing new appears here, so if one of
-                them sticks, the visual it came from is waiting a scroll away.
+                Six questions, one for each idea you have built. Every one of them is a{" "}
+                <InlineSpotColor
+                    varName="rowAccent"
+                    {...spotColorPropsFromDefinition(getVariableInfo('rowAccent'))}
+                >
+                    row
+                </InlineSpotColor>
+                {" "}meeting a{" "}
+                <InlineSpotColor
+                    varName="columnAccent"
+                    {...spotColorPropsFromDefinition(getVariableInfo('columnAccent'))}
+                >
+                    column
+                </InlineSpotColor>
+                , so if one sticks, the visual it came from is waiting a scroll away.
             </EditableParagraph>
         </Block>
     </StackLayout>,
@@ -154,9 +173,9 @@ export const matricesPracticeBlocks: ReactElement[] = [
         <Block id="practice-pair" padding="sm">
             <EditableParagraph id="para-practice-pair" blockId="practice-pair">
                 The next two questions both use{" "}
-                <InlineFormula latex={MATRIX_A} colorMap={{}} />
+                <InlineFormula latex={MATRIX_A} colorMap={{ matrixA: FIRST_HUE }} />
                 {" "}and{" "}
-                <InlineFormula latex={MATRIX_B} colorMap={{}} />.
+                <InlineFormula latex={MATRIX_B} colorMap={{ matrixB: SECOND_HUE }} />.
             </EditableParagraph>
         </Block>
     </StackLayout>,
@@ -246,7 +265,10 @@ export const matricesPracticeBlocks: ReactElement[] = [
         <Block id="practice-question-determinant" padding="md">
             <EditableParagraph id="para-practice-question-determinant" blockId="practice-question-determinant">
                 4. The matrix{" "}
-                <InlineFormula latex="\begin{bmatrix} 4 & 2 \\ 3 & 5 \end{bmatrix}" colorMap={{}} />
+                <InlineFormula
+                    latex="\begin{bmatrix} \clr{firstColumn}{4} & \clr{secondColumn}{2} \\ \clr{firstColumn}{3} & \clr{secondColumn}{5} \end{bmatrix}"
+                    colorMap={{ firstColumn: FIRST_HUE, secondColumn: SECOND_HUE }}
+                />
                 {" "}has determinant{" "}
                 <InlineFeedback
                     varName="answerPracticeDeterminant"
@@ -310,9 +332,15 @@ export const matricesPracticeBlocks: ReactElement[] = [
         <Block id="practice-question-grid" padding="md">
             <EditableParagraph id="para-practice-question-grid" blockId="practice-question-grid">
                 6. One last product, built a square at a time. With{" "}
-                <InlineFormula latex="C = \begin{bmatrix} 1 & 2 \\ 3 & 0 \end{bmatrix}" colorMap={{}} />
+                <InlineFormula
+                    latex="\clr{matrixC}{C} = \begin{bmatrix} 1 & 2 \\ 3 & 0 \end{bmatrix}"
+                    colorMap={{ matrixC: FIRST_HUE }}
+                />
                 {" "}and{" "}
-                <InlineFormula latex="D = \begin{bmatrix} 4 & 1 \\ 2 & 5 \end{bmatrix}" colorMap={{}} />
+                <InlineFormula
+                    latex="\clr{matrixD}{D} = \begin{bmatrix} 4 & 1 \\ 2 & 5 \end{bmatrix}"
+                    colorMap={{ matrixD: SECOND_HUE }}
+                />
                 , the entry in{" "}
                 <InlineToggle
                     id="toggle-practice-entry-position"

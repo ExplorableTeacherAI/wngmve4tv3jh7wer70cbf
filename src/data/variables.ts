@@ -464,6 +464,72 @@ export const variableDefinitions: Record<string, VariableDefinition> = {
         color: '#8E90F5',
     },
 
+    // ─────────────────────────────────────────
+    // Shared colour language (prose, formulas and figures all use these)
+    // ─────────────────────────────────────────
+    rowAccent: {
+        defaultValue: 'row',
+        type: 'spotColor',
+        label: 'Row accent',
+        description: 'Teal: every row of a first matrix, in prose, formulas and figures',
+        color: '#62D0AD',
+        bgColor: 'rgba(98, 208, 173, 0.2)',
+    },
+    columnAccent: {
+        defaultValue: 'column',
+        type: 'spotColor',
+        label: 'Column accent',
+        description: 'Indigo: every column of a second matrix, in prose, formulas and figures',
+        color: '#8E90F5',
+        bgColor: 'rgba(142, 144, 245, 0.2)',
+    },
+    innerAccent: {
+        defaultValue: 'inner',
+        type: 'spotColor',
+        label: 'Inner-size accent',
+        description: 'Amber: the two inner sizes that have to match before a product exists',
+        color: '#F7B23B',
+        bgColor: 'rgba(247, 178, 59, 0.2)',
+    },
+    areaAccent: {
+        defaultValue: 'area',
+        type: 'spotColor',
+        label: 'Area accent',
+        description: 'Violet: the determinant and the area it measures',
+        color: '#AC8BF9',
+        bgColor: 'rgba(172, 139, 249, 0.2)',
+    },
+    identityAccent: {
+        defaultValue: 'identity',
+        type: 'spotColor',
+        label: 'Identity accent',
+        description: 'Green: the identity matrix and a solved inverse',
+        color: '#22c55e',
+        bgColor: 'rgba(34, 197, 94, 0.2)',
+    },
+    answerSizeRuleShape: {
+        defaultValue: '',
+        type: 'select',
+        label: 'Size rule result',
+        description: 'Student choice, inside the formula, for the size of a general product',
+        placeholder: '???',
+        correctAnswer: 'm × p',
+        options: ['m × n', 'n × p', 'm × p', 'n × n'],
+        color: '#F7B23B',
+        bgColor: 'rgba(247, 178, 59, 0.18)',
+    },
+    answerInverseSwapEntry: {
+        defaultValue: '',
+        type: 'select',
+        label: 'Inverse formula, top-right entry',
+        description: 'Student choice, inside the inverse formula, for the top-right entry',
+        placeholder: '???',
+        correctAnswer: '-b',
+        options: ['b', '-b', 'd', '-d'],
+        color: '#8E90F5',
+        bgColor: 'rgba(142, 144, 245, 0.18)',
+    },
+
     // ========================================
     // ADD YOUR VARIABLES HERE
     // ========================================
