@@ -368,7 +368,7 @@ export const matricesRowMeetsColumnBlocks: ReactElement[] = [
     <StackLayout key="layout-row-column-heading" maxWidth="xl">
         <Block id="row-column-heading" padding="md">
             <EditableH2 id="h2-row-column-heading" blockId="row-column-heading">
-                One Row Meets One Column
+                The Row-by-Column Product Rule
             </EditableH2>
         </Block>
     </StackLayout>,
@@ -547,7 +547,12 @@ export const matricesRowMeetsColumnBlocks: ReactElement[] = [
                 >
                     column 1
                 </InlineSpotColor>
-                {" "}is built from row 2 of the first matrix together with{" "}
+                {" "}of a product, written{" "}
+                <InlineFormula
+                    latex="c_{\clr{row}{2}\clr{column}{1}}"
+                    colorMap={{ row: '#62D0AD', column: '#8E90F5' }}
+                />
+                , is built from row 2 of the first matrix together with{" "}
                 <InlineFeedback
                     varName="answerRowColumnAddress"
                     correctValue="column 1"

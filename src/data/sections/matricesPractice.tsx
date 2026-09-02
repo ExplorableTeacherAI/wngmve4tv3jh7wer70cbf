@@ -107,7 +107,7 @@ export const matricesPracticeBlocks: ReactElement[] = [
     <StackLayout key="layout-practice-heading" maxWidth="xl">
         <Block id="practice-heading" padding="md">
             <EditableH2 id="h2-practice-heading" blockId="practice-heading">
-                Putting It All Together
+                Consolidation Exercises
             </EditableH2>
         </Block>
     </StackLayout>,

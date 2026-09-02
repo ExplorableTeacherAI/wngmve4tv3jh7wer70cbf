@@ -8,7 +8,7 @@ export const matricesConclusionBlocks: ReactElement[] = [
     <StackLayout key="layout-wrapping-up-heading" maxWidth="xl">
         <Block id="wrapping-up-heading" padding="md">
             <EditableH2 id="h2-wrapping-up-heading" blockId="wrapping-up-heading">
-                Wrapping Up
+                Summary of Key Results
             </EditableH2>
         </Block>
     </StackLayout>,

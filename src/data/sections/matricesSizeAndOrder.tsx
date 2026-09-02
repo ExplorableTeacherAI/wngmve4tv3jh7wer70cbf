@@ -295,7 +295,7 @@ export const matricesSizeAndOrderBlocks: ReactElement[] = [
     <StackLayout key="layout-size-order-heading" maxWidth="xl">
         <Block id="size-order-heading" padding="md">
             <EditableH2 id="h2-size-order-heading" blockId="size-order-heading">
-                Size and Order
+                Conformability and Non-Commutativity
             </EditableH2>
         </Block>
     </StackLayout>,
@@ -303,7 +303,14 @@ export const matricesSizeAndOrderBlocks: ReactElement[] = [
     <StackLayout key="layout-size-order-setup" maxWidth="xl">
         <Block id="size-order-setup" padding="sm">
             <EditableParagraph id="para-size-order-setup" blockId="size-order-setup">
-                Not every pair of matrices can be multiplied at all, because{" "}
+                Two matrices can only be multiplied when they are{" "}
+                <InlineTooltip
+                    id="tooltip-order-conformable"
+                    tooltip="Conformable means the sizes fit for multiplication: the first matrix has exactly as many columns as the second has rows."
+                >
+                    conformable
+                </InlineTooltip>
+                , because{" "}
                 <InlineSpotColor
                     varName="rowAccent"
                     {...spotColorPropsFromDefinition(getVariableInfo('rowAccent'))}
@@ -345,7 +352,14 @@ export const matricesSizeAndOrderBlocks: ReactElement[] = [
     <StackLayout key="layout-size-order-reflect" maxWidth="xl">
         <Block id="size-order-reflect" padding="sm">
             <EditableParagraph id="para-size-order-reflect" blockId="size-order-reflect">
-                With ordinary numbers 3 times 7 and 7 times 3 agree, but{" "}
+                Ordinary multiplication is{" "}
+                <InlineTooltip
+                    id="tooltip-order-commutative"
+                    tooltip="An operation is commutative when swapping the order leaves the answer unchanged. Matrix multiplication is not."
+                >
+                    commutative
+                </InlineTooltip>
+                , so 3 times 7 and 7 times 3 agree, but{" "}
                 <InlineLinkedHighlight
                     id="highlight-order-product-ab"
                     varName="orderHighlight"

@@ -13,7 +13,7 @@ export const matricesIntroBlocks: ReactElement[] = [
     <StackLayout key="layout-matrices-intro-title" maxWidth="xl">
         <Block id="matrices-intro-title" padding="md">
             <EditableH1 id="h1-matrices-intro-title" blockId="matrices-intro-title">
-                Multiplying Matrices
+                Matrix Multiplication
             </EditableH1>
         </Block>
     </StackLayout>,

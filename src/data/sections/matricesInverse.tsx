@@ -307,7 +307,7 @@ export const matricesInverseBlocks: ReactElement[] = [
     <StackLayout key="layout-inverse-heading" maxWidth="xl">
         <Block id="inverse-heading" padding="md">
             <EditableH2 id="h2-inverse-heading" blockId="inverse-heading">
-                The Inverse
+                Inverse Matrices and Singularity
             </EditableH2>
         </Block>
     </StackLayout>,
@@ -404,8 +404,14 @@ export const matricesInverseBlocks: ReactElement[] = [
                 <InlineTrigger id="trigger-inverse-flattening" varName="inverseMatrixChoice" value="a flattening matrix">
                     a flattening matrix
                 </InlineTrigger>
-                {" "}is beyond rescue: no four numbers will ever reach the identity, and the F never gets
-                home.
+                {" "}is{" "}
+                <InlineTooltip
+                    id="tooltip-inverse-singular"
+                    tooltip="A singular matrix has determinant zero, so it has no inverse. Any other matrix is called non-singular or invertible."
+                >
+                    singular
+                </InlineTooltip>
+                : no four numbers will ever reach the identity, and the F never gets home.
             </EditableParagraph>
         </Block>
     </StackLayout>,

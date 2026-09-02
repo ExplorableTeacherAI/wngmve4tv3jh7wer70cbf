@@ -249,7 +249,7 @@ export const matricesDeterminantBlocks: ReactElement[] = [
     <StackLayout key="layout-determinant-heading" maxWidth="xl">
         <Block id="determinant-heading" padding="md">
             <EditableH2 id="h2-determinant-heading" blockId="determinant-heading">
-                The Determinant
+                The Determinant as an Area Scale Factor
             </EditableH2>
         </Block>
     </StackLayout>,
@@ -338,14 +338,14 @@ export const matricesDeterminantBlocks: ReactElement[] = [
                 A{" "}
                 <InlineTooltip
                     id="tooltip-determinant-definition"
-                    tooltip="The determinant of a two by two matrix is the number of times it multiplies area, negative when it also flips the shape over."
+                    tooltip="The determinant is the factor by which a matrix scales area. It is negative when the matrix also reverses orientation."
                     color="#AC8BF9"
                     bgColor="rgba(172, 139, 249, 0.15)"
                 >
                     determinant
                 </InlineTooltip>
-                {" "}of 2 means areas double, and a negative one means the shape was flipped over as well
-                as stretched. When it reaches{" "}
+                {" "}is an area scale factor: 2 means areas double, and a negative one means the shape was
+                flipped over as well as stretched. When it reaches{" "}
                 <InlineSpotColor
                     varName="areaAccent"
                     {...spotColorPropsFromDefinition(getVariableInfo('areaAccent'))}
